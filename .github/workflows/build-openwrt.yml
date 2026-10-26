@@ -1,1 +1,38 @@
+name: Build fanchmWrt (x86/64)
 
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare .config
+        run: |
+          cp .config.build .config 2>/dev/null || true
+          echo "CONFIG_TARGET_x86=y" >> .config
+          echo "CONFIG_TARGET_x86_64=y" >> .config
+          echo "CONFIG_TARGET_x86_64_Generic=y" >> .config
+          echo "CONFIG_GRUB_EFI_IMAGES=y" >> .config
+          echo "CONFIG_PACKAGE_luci=y" >> .config
+
+      - name: Update feeds
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Build firmware
+        run: |
+          make defconfig
+          make -j$(nproc) V=s
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fanchmWrt-x86-64
+          path: bin/targets/x86/64/
