@@ -1,22 +1,18 @@
 # fanchmWrt x86/64 build config for Techvision TVI7309X (Intel N5100)
 
-
 # --- Target: x86/64 Generic (plugins follow fanchmWrt defaults) ---
 CONFIG_TARGET_x86=y
 CONFIG_TARGET_x86_64=y
 CONFIG_TARGET_x86_64_Generic=y
-
 
 # --- Image formats: UEFI + Legacy BIOS, gzip compressed ---
 CONFIG_GRUB_IMAGES=y
 CONFIG_GRUB_EFI_IMAGES=y
 CONFIG_TARGET_IMAGES_GZIP=y
 
-
 # --- Web UI + PPPoE dial-up (essential base, not plugins) ---
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_luci-proto-ppp=y
-
 
 # --- DAE (eBPF transparent proxy) dependency core: kernel native BTF support ---
 CONFIG_DEVEL=y
@@ -34,3 +30,9 @@ CONFIG_PACKAGE_kmod-nft-tproxy=y
 CONFIG_PACKAGE_kmod-xdp-sockets-diag=y
 
 CONFIG_TARGET_ROOTFS_PARTSIZE=2048
+
+# --- honk (eBPF transparent proxy, compiled into firmware) ---
+CONFIG_PACKAGE_honk=y
+# vmlinux-btf-builtin provides the virtual vmlinux-btf dependency;
+# the kernel already ships native BTF (CONFIG_KERNEL_DEBUG_INFO_BTF=y)
+CONFIG_PACKAGE_vmlinux-btf-builtin=y
