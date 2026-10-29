@@ -26,7 +26,8 @@ jobs:
           rustup toolchain install 1.99.1 --profile minimal --target x86_64-unknown-linux-musl
           rustup toolchain install nightly-2026-10-20 --profile minimal --component rust-src,llvm-tools
           rustup target add --toolchain nightly-2026-10-20 bpfel-unknown-none
-          curl -fsSL --retry 3 -o "$RUNNER_TEMP/bpf-linker.tar.zst"             https://github.com/aya-rs/bpf-linker/releases/download/v0.11.0/bpf-linker-x86_64-unknown-linux-musl.tar.zst
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/bpf-linker.tar.zst" \
+            https://github.com/aya-rs/bpf-linker/releases/download/v0.11.0/bpf-linker-x86_64-unknown-linux-musl.tar.zst
           echo "10f62ba9ab7e544d538370552660efcb4f1a19153d5752bbf0f6b51f3bada450  $RUNNER_TEMP/bpf-linker.tar.zst" | sha256sum -c -
           zstd -dc "$RUNNER_TEMP/bpf-linker.tar.zst" | tar -xf - -C "$HOME/.cargo/bin"
           chmod +x "$HOME/.cargo/bin/bpf-linker"
